@@ -1,0 +1,10 @@
+name: Build IPA
+on: [push]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install @capacitor/cli @capacitor/core @capacitor/ios
+      - run: npx cap add ios
+      - run: npx cap build ios # Erzeugt das Xcode Projekt
