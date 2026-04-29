@@ -1,10 +1,31 @@
-name: Build IPA
+name: Build iOS App
 on: [push]
 jobs:
   build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm install @capacitor/cli @capacitor/core @capacitor/ios
-      - run: npx cap add ios
-      - run: npx cap build ios # Erzeugt das Xcode Projekt
+      
+      - name: Install Dependencies
+        run: |
+          npm install @capacitor/cli @capacitor/core @capacitor/ios
+          npx cap add ios
+          
+      - name: Build Xcode Project
+        run: |
+          npx cap sync ios
+          
+      - name: Archive Xcode
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace \
+                     -scheme App \
+                     -configuration Debug \
+                     -sdk iphoneos \
+                     -derivedDataPath build \
+                     clean build CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload Build Folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-app
+          path: build/Build/Products/Debug-iphoneos/App.app
