@@ -1,0 +1,8 @@
+{
+  "appId": "com.luna.translation",
+  "appName": "Luna Translation",
+  "webDir": "www",
+  "server": {
+    "url": "https://luna-srt-translationen-3271443172.us-west1.run.app/"
+  }
+}
